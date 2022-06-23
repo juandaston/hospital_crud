@@ -1,0 +1,24 @@
+import pymysql
+
+try:
+	conn = pymysql.connect(host='localhost',
+                             user='root',
+                             password='****',
+                             db='hospital')
+	print("success connection")
+except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
+	print("error: ", e)
+  
+  
+try:
+		with conn.cursor() as cursor:
+			query = "INSERT INTO TblPacientes(titulo, anio) VALUES (%s, %s);"
+			cursor.execute(query, ("Volver al futuro 1", 1985))
+			cursor.execute(query, ("Ready Player One", 2018))
+			cursor.execute(query, ("It", 2017))
+			cursor.execute(query, ("Pulp Fiction", 1994))
+		conn.commit()
+	finally:
+		conn.close()
+except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
+	print("err: ", e)
