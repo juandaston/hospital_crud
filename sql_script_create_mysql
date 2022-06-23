@@ -1,5 +1,5 @@
 CREATE DATABASE hospital;
-
+USE hospital;
 CREATE TABLE IF NOT EXISTS TblPaciente (
     id INT AUTO_INCREMENT PRIMARY KEY,
     tipo_documento VARCHAR(255) NOT NULL,
