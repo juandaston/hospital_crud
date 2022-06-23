@@ -1,24 +1,69 @@
 import pymysql
+from datetime import datetime
 
 try:
-	conn = pymysql.connect(host='localhost',
-                             user='root',
-                             password='****',
-                             db='hospital')
-	print("success connection")
+    conn = pymysql.connect(host='localhost',
+                           user='root',
+                           password='****',
+                           db='hospital')
+    print("success connection")
 except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
-	print("error: ", e)
-  
-  
-try:
-		with conn.cursor() as cursor:
-			query = "INSERT INTO TblPacientes(titulo, anio) VALUES (%s, %s);"
-			cursor.execute(query, ("Volver al futuro 1", 1985))
-			cursor.execute(query, ("Ready Player One", 2018))
-			cursor.execute(query, ("It", 2017))
-			cursor.execute(query, ("Pulp Fiction", 1994))
-		conn.commit()
-	finally:
-		conn.close()
-except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
-	print("err: ", e)
+    print("error: ", e)
+
+
+class crud_hospital:
+
+    @staticmethod
+    def insert():
+        try:
+            now = datetime.now()
+            formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
+
+            with conn.cursor() as cursor:
+                query = "INSERT INTO TblCita(codigo_cita, fecha, hora, id_paciente, id_medico, diagnostico, activo) VALUES (%s, %d, %d, %s, %s, %s, %s);"
+                cursor.execute(query, ("codigo", formatted_date, formatted_date, 1, 1, "diag", "true"))
+            conn.commit()
+        except Exception as e:
+            print("err: ", e)
+        finally:
+            conn.close()
+
+
+    @staticmethod
+    def udpate(id, codigo_cita):
+        try:
+            input_data = (id, codigo_cita)
+            with conn.cursor() as cursor:
+                sql = """UPDATE TblCita SET codigo_cita = %s WHERE id = %s"""
+                cursor.execute(sql, input_data)
+            self.conn.commit()
+        except Exception as e:
+            print("err: ", e)
+        finally:
+            self.conn.close()
+
+
+
+    @staticmethod
+    def delete(id):
+        try:
+            with conn.cursor() as cursor:
+                sql = """DELETE FROM TblCita WHERE id = %s"""
+                cursor.execute(sql, id)
+            self.conn.commit()
+        except Exception as e:
+            print("err: ", e)
+        finally:
+            self.conn.close()
+
+    @staticmethod
+    def read(id):
+        try:
+            with conn.cursor() as cursor:
+                sql = """SELECT * FROM TblCita WHERE id = %s"""
+                cursor.execute(sql, id)
+            self.conn.commit()
+        except Exception as e:
+            print("err: ", e)
+        finally:
+            self.conn.close()
