@@ -1,0 +1,36 @@
+CREATE DATABASE hospital;
+
+CREATE TABLE IF NOT EXISTS TblPaciente (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    tipo_documento VARCHAR(255) NOT NULL,
+    nombre_completo VARCHAR(255) NOT NULL,
+    direccion VARCHAR(255) NOT NULL,
+    eps VARCHAR(255) NOT NULL,
+    activo BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS TblMedico (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    tipo_documento VARCHAR(255) NOT NULL,
+    nombre_completo VARCHAR(255) NOT NULL,
+    especialidad VARCHAR(255) NOT NULL,
+    activo BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS TblCita (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    codigo_cita VARCHAR(255) NOT NULL,
+    fecha DATE NOT NULL,
+    hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    id_paciente INT NOT NULL,
+    id_medico INT NOT NULL,
+    diagnostico VARCHAR(255) NOT NULL,
+    activo BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_paciente)
+        REFERENCES TblPaciente (id)
+    FOREIGN KEY (id_medico)
+        REFERENCES TblMedico (id)
+);
